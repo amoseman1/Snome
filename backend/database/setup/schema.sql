@@ -28,24 +28,38 @@ CREATE TABLE "address" (
   "zip_code" int NOT NULL
 );
 
+
 DROP TABLE IF EXISTS "snome_user";
-CREATE TABLE "snome_user" (
-    "id" serial PRIMARY KEY,
-    "location_id" int REFERENCES "location",
-    "name" text   NOT NULL,
-    "travel_start" varchar, --  NOT NULL,  -- should be nullable
-    "travel_end" varchar,  -- NOT NULL,    -- should be nullable
-    "age" int,               --NOT NULL,
-    "user_phone" bigint, --  NOT NULL,
-    "user_photo" text, --  NOT NULL,  -- should be nullable
-    "video_tour" text, --   NOT NULL,  -- should be nullable
-    "about" text, --  NOT NULL,
-    "email" text   NOT NULL,
-    "mailing_address" int REFERENCES "address" NOT NULL,
-    "residential_address"  int REFERENCES "address" NOT NULL, --  NOT NULL  -- separate into address fields (separate)
-    "password" text NOT NULL,-- add password
-    "is_active" boolean NOT NULL-- is active flag
-);
+ CREATE TABLE "snome_user" (
+     "id" serial PRIMARY KEY,
+     "location_id" int REFERENCES "location",
+     "nameText" VARCHAR(20) NOT NULL,
+     "email" text NOT NULL,
+     "address" text NOT NULL,
+     "city" VARCHAR(20) NOT NULL,
+     "state" VARCHAR(2) NOT NULL,
+     "zipCode" INT NOT NULL,
+     "password" text  NOT NULL,
+     "confirmPassword" text NOT NULL
+ )
+-- DROP TABLE IF EXISTS "snome_user";
+-- CREATE TABLE "snome_user" (
+--     "id" serial PRIMARY KEY,
+--     "location_id" int REFERENCES "location",
+--     "nameText" text   NOT NULL,
+--     "travel_start" varchar, --  NOT NULL,  -- should be nullable
+--     "travel_end" varchar,  -- NOT NULL,    -- should be nullable
+--     "age" int,               --NOT NULL,
+--     "user_phone" bigint, --  NOT NULL,
+--     "user_photo" text, --  NOT NULL,  -- should be nullable
+--     "video_tour" text, --   NOT NULL,  -- should be nullable
+--     "about" text, --  NOT NULL,
+--     "email" text   NOT NULL,
+--     "mailing_address" int REFERENCES "address" NOT NULL,
+--     "residential_address"  int REFERENCES "address" NOT NULL, --  NOT NULL  -- separate into address fields (separate)
+--     "password" text NOT NULL,-- add password
+--     "is_active" boolean NOT NULL-- is active flag
+-- );
 
 DROP TABLE IF EXISTS "snome";
 CREATE TABLE "snome" (

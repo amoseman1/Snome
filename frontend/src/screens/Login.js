@@ -12,43 +12,43 @@ export default function Login() {
     const context = useContext(UserContext)
 
     const [credentials, setCredentials] = useState({
-        name: '',
+        nameText: '',
         password: ''
-      });
+    });
 
     const B = (props) => <Text style={{ fontWeight: 'bold', color: "#448EB1" }}>{props.children}</Text>
 
     const login = async (e) => {
         e.preventDefault()
         axios({
-          method: 'post',
-          url: 'http://localhost:3000/login',
-          data:
-            credentials
+            method: 'post',
+            url: 'http://localhost:3000/login',
+            data:
+                credentials
             //receive token
-          ,
+            ,
         })
-        .then(res => {
-            // let token = req.header('Authorization');
+            .then(res => {
+                // let token = req.header('Authorization');
 
-            console.log(res)
-            console.log(res.data);
+                console.log(res)
+                console.log(res.data);
 
-            AsyncStorage.setItem('token', JSON.stringify(res.data.token))
-            //login user
-            context.setUserData({
-                ...context.userData,
-                is_logged_in: true
+                AsyncStorage.setItem('token', JSON.stringify(res.data.token))
+                //login user
+                context.setUserData({
+                    ...context.userData,
+                    is_logged_in: true
+                })
+                // localStorage.setItem('token', res.data.token);
+                // console.log(res.data.token)
+                // setJwt(res.data.token);
+                // setLogged_in(true)
             })
-            // localStorage.setItem('token', res.data.token);
-            // console.log(res.data.token)
-            // setJwt(res.data.token);
-            // setLogged_in(true)
-          })
-        .catch( err => {
-          console.log(err)
-        })
-      }
+            .catch(err => {
+                console.log(err)
+            })
+    }
 
     return (
         <View
@@ -90,29 +90,29 @@ export default function Login() {
                     // value={nameText}
                     // onChangeText={setNameText}
                     value={credentials.name}
-                    onChange={(e) => setCredentials({...credentials, name: e.target.value})}
+                    onChange={(e) => setCredentials({ ...credentials, nameText: e.target.value })}
                     style={styles.formInput}
                 />
 
                 <Text style={styles.horizontal}>
-                    <Text style={styles.label} htmlFor="name">Password: </Text>
+                    <Text style={styles.label} htmlFor="password">Password: </Text>
                     <Text style={styles.required}>*Required</Text>
                 </Text>
                 <TextInput
-                    id="name"
-                    placeholder="Name"
+                    id="password"
+                    placeholder="Password"
                     type="text"
                     required
                     //value={nameText}
                     // onChangeText={setNameText}
                     value={credentials.password}
-                    onChange={(e) => setCredentials({...credentials, password: e.target.value})}
+                    onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
                     style={styles.formInput}
                 />
 
                 <Pressable style={styles.button} title="Submit"
                     // onPress={handleSubmit}
-                    onPress={(e)=>{ login(e), console.log(credentials, "hello")}}
+                    onPress={(e) => { login(e), console.log(credentials, "hello") }}
                 >
 
                     <Text>Lets get Snomey</Text></Pressable>

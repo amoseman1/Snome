@@ -3,6 +3,7 @@ const router = require("express").Router();
 const { uploadSnomePhotos } = require("./middleware/multer.js");
 const storage = require('@react-native-async-storage/async-storage');
 require('dotenv').config()
+const jwt = require('express-jwt');
 
 /* define API url to handler mappings here, organized by model and CRUD */
 module.exports = router;

@@ -2,7 +2,7 @@ const db = require('../../database');
 const bcrypt = require('bcrypt')
 
 module.exports = {
-  getAddress: async ({id}) => {
+  getAddress: async ({ id }) => {
     try {
       let address = await db.one(`
         SELECT *
@@ -12,11 +12,11 @@ module.exports = {
       return address
     } catch (err) {
       console.log(`DATABASE ERROR - GET: ${err}`);
-      return err;
+      return err
     }
   },
 
-  createUser: async ({name, email, street, city, state, zipCode, password}) => {
+  createUser: async ({ nameText, email, street, city, state, zipCode, password }) => {
     try {
       const addressId = await db.one(`
         INSERT INTO address (
@@ -41,7 +41,7 @@ module.exports = {
       const userId = await db.one(`
         INSERT INTO snome_user (
           id,
-          name,
+          nameText,
           about,
           email,
           mailing_address,
@@ -51,7 +51,7 @@ module.exports = {
         )
         VALUES (
           (SELECT MAX(id) FROM snome_user) +1,
-          '${name}',
+          '${nameText}',
           'placeholder',
           '${email}',
           ${addressId.id},
@@ -62,7 +62,7 @@ module.exports = {
         RETURNING id;
       `);
       return `New user created: ${JSON.stringify(userId)}`
-    } catch(err) {
+    } catch (err) {
       console.log(`DATABASE ERROR - POST: ${err}`);
       return err;
     }
@@ -93,13 +93,13 @@ module.exports = {
     // )
   },
 
-  updateUser: async (id, { location_id, name, travel_start, travel_end, age, user_phone, user_photo, video_tour, about, email, mailing_address, residential_address }) => {
+  updateUser: async (id, { location_id, nameText, travel_start, travel_end, age, user_phone, user_photo, video_tour, about, email, mailing_address, residential_address }) => {
     try {
       await db.none(`
         UPDATE snome_user
         SET
           location_id=$1,
-          name=$2,
+          nameText=$2,
           travel_start=$3,
           travel_end=$4,
           age=$5,
@@ -111,10 +111,10 @@ module.exports = {
           mailing_address=$11,
           residential_address=$12
         WHERE id=${id}
-      `, [location_id, name, travel_start, travel_end, age, user_phone,
+      `, [location_id, nameText, travel_start, travel_end, age, user_phone,
         user_photo, video_tour, about, email, mailing_address, residential_address]);
-        return 'Update Successful';
-    } catch(err) {
+      return 'Update Successful';
+    } catch (err) {
       console.log(`DATABASE ERROR - PUT: ${err}`);
       return err;
     }
@@ -124,7 +124,7 @@ module.exports = {
     try {
       let result = await db.one(`SELECT * FROM snome_user WHERE id =${id}`);
       return result;
-    } catch(err) {
+    } catch (err) {
       console.log(`DATABASE ERROR:  ${err}`);
       return err;
     }
@@ -134,10 +134,11 @@ module.exports = {
     // name = 'John Smith';
     //George Thomson
     try {
-      let result = await db.one('SELECT * FROM snome_user WHERE name = $1', name);
+      //our backned is failing here at result.password
+      let result = await db.one('SELECT * FROM snome_user WHERE nameText = $1', nameText);
       console.log('db success: ', result.password)
       return result;
-    } catch(err) {
+    } catch (err) {
       console.log(`DATABASE ERROR:  ${err}`);
       return err;
     }
@@ -147,7 +148,7 @@ module.exports = {
     try {
       let result = await db.manyOrNone('SELECT * FROM snome_user');
       return result;
-    } catch(err) {
+    } catch (err) {
       console.log(`DATABASE ERROR: ${err}`);
       return err;
     }
@@ -167,7 +168,7 @@ module.exports = {
       `);
       return emailExists;
       //
-    } catch(err) {
+    } catch (err) {
       console.log(`DATABASE ERROR while checking if email exists:  ${err}`);
     }
   },

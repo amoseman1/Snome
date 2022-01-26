@@ -11,10 +11,10 @@ const authenticate = (pass1, pass2) => {
 module.exports = {
 
   login: async (req, res) => {
-    console.log('credentials: ', req.body.name, req.body.password)
+    console.log('credentials: ', req.body.nameText, req.body.password)
     // res.send(['input controller working', req.body.name, req.body.password])
     try {
-      const auth_user = await user.getUserByName(req.body.name);
+      const auth_user = await user.getUserByName(req.body.nameText);
 
 
       let is_auth = authenticate(req.body.password, auth_user.password)
@@ -23,9 +23,9 @@ module.exports = {
       if (!is_auth) throw new Error('credentials did not match')
       require('dotenv').config()
       require('dotenv').config()
-      const token = jsonwebtoken.sign(process.env.TOKEN_SECRET, '123');
+      const token = jsonwebtoken.sign({}, process.env.TOKEN_SECRET);
       console.log(token)
-      res.header("auth-token", token)
+      //res.header("auth-token", token)
       res.status(200).send({ auth_user, token });
     } catch (err) {
       console.log(`SERVER SIDE ERROR - POST: ${err}`);
@@ -66,7 +66,7 @@ module.exports = {
 
   getUserByName: async (req, res) => {
     try {
-      let data = await user.getUserByName(req.params.name);
+      let data = await user.getUserByName(req.params.nameText);
       res.status(200).send(data);
     } catch (err) {
       console.log(`SERVER ERROR: ${err}`);
