@@ -21,11 +21,13 @@ module.exports = {
 
 
       if (!is_auth) throw new Error('credentials did not match')
-      const token = jsonwebtoken.sign('abc', '123');
+      require('dotenv').config()
+      require('dotenv').config()
+      const token = jsonwebtoken.sign(process.env.TOKEN_SECRET, '123');
       console.log(token)
       res.header("auth-token", token)
-      res.status(200).send({auth_user, token});
-    } catch(err) {
+      res.status(200).send({ auth_user, token });
+    } catch (err) {
       console.log(`SERVER SIDE ERROR - POST: ${err}`);
       res.status(500).send(err);
     }
@@ -35,7 +37,7 @@ module.exports = {
     try {
       const response = await user.createUser(req.body);
       res.status(201).send("User Created");
-    } catch(err) {
+    } catch (err) {
       console.log(`SERVER SIDE ERROR - POST: ${err}`);
       res.status(500).send(err);
     }
@@ -46,7 +48,7 @@ module.exports = {
     try {
       await user.updateUser(req.params.id, req.body);
       res.status(202).send('Updated Successfuly');
-    } catch(err) {
+    } catch (err) {
       console.log(`SERVER ERROR - PUT:  ${err}`);
       return err;
     }
@@ -56,7 +58,7 @@ module.exports = {
     try {
       let data = await user.getUser(req.params.id);
       res.status(200).send(data);
-    } catch(err) {
+    } catch (err) {
       console.log(`SERVER ERROR: ${err}`);
       res.status(400).send(err);
     }
@@ -66,7 +68,7 @@ module.exports = {
     try {
       let data = await user.getUserByName(req.params.name);
       res.status(200).send(data);
-    } catch(err) {
+    } catch (err) {
       console.log(`SERVER ERROR: ${err}`);
       res.status(400).send(err);
       res.status(400).send(undefined);
@@ -77,7 +79,7 @@ module.exports = {
     try {
       let data = await user.getAllUsers();
       res.status(200).send(data);
-    } catch(err) {
+    } catch (err) {
       console.log(`SERVER ERROR: ${err}`);
       res.status(400).send(err);
     }
@@ -87,7 +89,7 @@ module.exports = {
     try {
       let data = await user.checkForEmail(req.params.email);
       res.status(200).send(data);
-    } catch(err) {
+    } catch (err) {
       console.log(`SERVER ERROR: ${err}`);
       res.status(400).send(err);
     }
@@ -97,7 +99,7 @@ module.exports = {
     try {
       await user.deleteUser(req.params.id);
       res.status(202).send("User Deleted")
-    } catch(err) {
+    } catch (err) {
       console.log(`SERVER ERROR - DELETE: ${err}`);
       res.status(400).send(err);
     }
